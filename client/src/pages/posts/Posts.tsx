@@ -3,7 +3,7 @@ import { postAPI } from "../../services/PostService";
 import { Button, Col, Row, Space, Spin, Typography, Slider } from "antd";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PostItem from "./PostItem";
-import { IPost } from "../../models/IPost";
+import { IComp } from "../../models/IPost";
 const { Title, Paragraph } = Typography;
 
 const PostsList = () => {
@@ -14,54 +14,54 @@ const PostsList = () => {
   const lastElement = useRef<Element>();
   const observer = useRef<IntersectionObserver>();
   const {
-    data: posts,
+    data: companies,
     error,
     isLoading,
     refetch,
   } = postAPI.useFetchAllPostsQuery({limit, page});
 
   const [createPost, {}] = postAPI.useCreatePostMutation();
-  const [updatePost, {}] = postAPI.useUpdatePostMutation();
-  const [deletePost, {}] = postAPI.useDeletePostMutation();
+  // const [updatePost, {}] = postAPI.useUpdatePostMutation();
+  // const [deletePost, {}] = postAPI.useDeletePostMutation();
 
-  useEffect(() => {
-    if(isLoading) return;
-    if(observer.current) (observer.current as IntersectionObserver).disconnect();
-    const callback = function(entries: any) {
-      if(entries[0].isIntersecting) {
-        setPage(page + 1);
-      }
-    }
-    observer.current = new IntersectionObserver(callback);
-    (observer.current).observe(lastElement.current!);
-  }, [postsDisplay]);
+  // useEffect(() => {
+  //   if(isLoading) return;
+  //   if(observer.current) (observer.current as IntersectionObserver).disconnect();
+  //   const callback = function(entries: any) {
+  //     if(entries[0].isIntersecting) {
+  //       setPage(page + 1);
+  //     }
+  //   }
+  //   observer.current = new IntersectionObserver(callback);
+  //   (observer.current).observe(lastElement.current!);
+  // }, [postsDisplay]);
 
   useEffect(() => {
     startTransition(() => {
-      if(posts?.length && (page !== 1)) {
-        setPostsDisplay([...postsDisplay, ...posts as []]);
-      } else if (posts?.length) {
-        setPostsDisplay(posts as []);
+      if(companies?.length && (page !== 1)) {
+        setPostsDisplay([...postsDisplay, ...companies as []]);
+      } else if (companies?.length) {
+        setPostsDisplay(companies as []);
       }
     });
-  }, [posts]);
+  }, [companies]);
 
   useEffect(() => {
     setPage(1);
   }, [limit]);
 
   const handleCreate = async () => {
-    const title = prompt();
-    await createPost({ title, body: title, userId: 1 } as IPost);
+    const name = prompt();
+    await createPost({ name, logo: name, city: name } as IComp);
   };
 
-  const handleRemove = (post: IPost) => {
-    deletePost(post);
-  };
+  // const handleRemove = (post: IPost) => {
+  //   deletePost(post);
+  // };
 
-  const handleUpdate = (post: IPost) => {
-    updatePost(post);
-  };
+  // const handleUpdate = (post: IPost) => {
+  //   updatePost(post);
+  // };
 
   return (
     <div>
@@ -81,22 +81,22 @@ const PostsList = () => {
           <Space direction="vertical" size="small" style={{ display: 'flex', margin: '1rem 0' }}>
             <TransitionGroup>
               {postsDisplay &&
-                postsDisplay.map((post: IPost) => (
+                postsDisplay.map((comp: IComp) => (
                   <CSSTransition
-                    key={post.id}
+                    key={comp.id}
                     timeout={500}
                     classNames="postAnimation"
                   >
                     <PostItem
-                      remove={handleRemove}
-                      update={handleUpdate}
-                      post={post}
+                      // remove={handleRemove}
+                      // update={handleUpdate}
+                      comp={comp}
                     />
                   </CSSTransition>
                 ))
               }
             </TransitionGroup>
-            <div ref={lastElement as any} style={{height: '20px'}} />
+            {/* <div ref={lastElement as any} style={{height: '20px'}} /> */}
           </Space>
         </Col>
       </Row>

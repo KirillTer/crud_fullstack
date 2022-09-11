@@ -1,6 +1,7 @@
-export interface IPost {
+export interface IComp {
   id: number;
-  userId: number;
-  title: string;
-  body: string;
+  name: string;
+  logo: string;
+  city: string;
+  specialties: Array<{value: string}>
 }

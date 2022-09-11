@@ -12,6 +12,9 @@ const config_1 = require("@nestjs/config");
 const sequelize_1 = require("@nestjs/sequelize");
 const companies_model_1 = require("./companies/companies.model");
 const companies_module_1 = require("./companies/companies.module");
+const specialties_module_1 = require("./specialties/specialties.module");
+const specialties_model_1 = require("./specialties/specialties.model");
+const comp_spec_model_1 = require("./specialties/comp-spec.model");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -29,11 +32,11 @@ AppModule = __decorate([
                 username: process.env.POSTGRES_USER,
                 password: process.env.POSTGRES_PASSWORD,
                 database: process.env.POSTGRES_DB,
-                models: [companies_model_1.Company],
-                synchronize: true,
+                models: [companies_model_1.Company, specialties_model_1.Specialty, comp_spec_model_1.CompSpec],
                 autoLoadModels: true,
             }),
             companies_module_1.CompaniesModule,
+            specialties_module_1.SpecialtiesModule,
         ]
     })
 ], AppModule);

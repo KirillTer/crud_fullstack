@@ -15,21 +15,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompaniesService = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
+const specialties_service_1 = require("../specialties/specialties.service");
 const companies_model_1 = require("./companies.model");
 let CompaniesService = class CompaniesService {
-    constructor(companyRepository) {
+    constructor(companyRepository, specService) {
         this.companyRepository = companyRepository;
+        this.specService = specService;
     }
     async createCompany(dto) {
         const company = await this.companyRepository.create(dto);
+        const specialty = await this.specService.getSpecialtyByValue("spec1");
+        await company.$set('specialties', [specialty.id]);
+        return company;
     }
     async getAllCompanies() {
+        const companies = await this.companyRepository.findAll({ include: { all: true } });
+        return companies;
     }
 };
 CompaniesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(companies_model_1.Company)),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [Object, specialties_service_1.SpecialtiesService])
 ], CompaniesService);
 exports.CompaniesService = CompaniesService;
 //# sourceMappingURL=companies.service.js.map

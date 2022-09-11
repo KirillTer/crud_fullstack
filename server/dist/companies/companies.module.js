@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompaniesModule = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
+const specialties_module_1 = require("../specialties/specialties.module");
+const comp_spec_model_1 = require("../specialties/comp-spec.model");
+const specialties_model_1 = require("../specialties/specialties.model");
 const companies_controller_1 = require("./companies.controller");
 const companies_model_1 = require("./companies.model");
 const companies_service_1 = require("./companies.service");
@@ -19,7 +22,8 @@ CompaniesModule = __decorate([
         controllers: [companies_controller_1.CompaniesController],
         providers: [companies_service_1.CompaniesService],
         imports: [
-            sequelize_1.SequelizeModule.forFeature([companies_model_1.Company])
+            sequelize_1.SequelizeModule.forFeature([companies_model_1.Company, specialties_model_1.Specialty, comp_spec_model_1.CompSpec]),
+            specialties_module_1.SpecialtiesModule
         ]
     })
 ], CompaniesModule);
